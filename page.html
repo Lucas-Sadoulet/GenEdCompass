@@ -108,7 +108,7 @@
         }
 
         .suggest_table {
-            width: 57%;
+            width: 55%;
             border-spacing: 0;
             /* Add this line to ensure no spacing between cells */
             margin-top: 6px;
@@ -647,7 +647,7 @@
 
     <script>
 
-        const fill_width = 40
+        const fill_width = 10.25
 
 
 
@@ -1131,10 +1131,10 @@
 
 
                 const sliderIndicator = subjectTable.parentElement.querySelector('.position-indicator');
-                sliderIndicator.style.width = filled * fill_width + "px"
+                sliderIndicator.style.width = filled * fill_width + "%"
 
                 const sliderTrack = subjectTable.parentElement.querySelector('.slider-track');
-                sliderTrack.style.width = qualificationSize[i] * fill_width + "px"
+                sliderTrack.style.width = qualificationSize[i] * fill_width + "%"
                 /*if(filled >= qualificationSize[i] + 3)
                 {
                     sliderIndicator.style.backgroundColor = "#12872f";
