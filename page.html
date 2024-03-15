@@ -1002,7 +1002,7 @@
 
             const filteredDataStart = unadded_dataset.filter(entry =>
                 entry.courseCode.toLowerCase().startsWith(courseCodeInput) &&
-                entry.courseNumber.toLowerCase().startsWith(classNumberInput) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.credit == creditInput)
+                entry.courseNumber.toLowerCase().startsWith(classNumberInput) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.credit == creditInput || creditInput <= 0)
             );
             const filteredDataContain = unadded_dataset.filter(entry =>
                 (entry.courseCode.toLowerCase().indexOf(courseCodeInput) >= 0 &&
