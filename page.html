@@ -61,7 +61,7 @@
         .slider-track {
             position: relative;
             height: 15px;
-            background-color: #e9ecef;
+            background-color: #d7dde3;
             border-radius: .25rem;
             margin: 5px 10px;
 
@@ -70,6 +70,15 @@
         .ratio-text {
             margin-left: 14px;
             font-size: small;
+        }
+
+        .move-3-text {
+            font-size: small;
+
+            position: relative;
+            left: 45%;
+            text-decoration-line: underline;
+            cursor: pointer;
         }
 
         .position-indicator {
@@ -114,10 +123,33 @@
             margin-top: 6px;
         }
 
+
+
+        :root {
+
+            --light-color-1: #eeeef0;
+            --light-color-2: #d9dadd;
+        }
+
+        /* Dark variation of the colors */
+        [data-theme="perfect-row"] {
+            --light-color-1: #7b80d9;
+            --light-color-2: #696ec8;
+        }
+
         th,
         td {
-            border: 1px solid #ddd;
+            border-bottom: 1px solid #a1a2ca;
             padding: 2px;
+
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--light-color-1);
+        }
+
+        tr:nth-child(odd) {
+            background-color: var(--light-color-2);
         }
 
         .container {
@@ -127,7 +159,7 @@
             /* Distribute items evenly along the main axis */
             align-items: center;
             /* Center items vertically */
-            width: 25vw;
+            width: 27vw;
             padding: 0;
             margin-top: -2vw;
             margin-bottom: -3vw;
@@ -214,7 +246,7 @@
             position: relative;
 
             scale: .8;
-            transform: translate(0, .5vw);
+            transform: translate(-1vw, .5vw);
         }
 
         .grid-item {
@@ -233,7 +265,7 @@
 
         .grid-item.clicked {
             color: #f8f9fa;
-            background-color: #506c94
+            background-color: #696ec8
         }
 
         .domain_text {
@@ -241,10 +273,7 @@
             text-align: center;
         }
 
-        .perfect-row {
 
-            background-color: #b0bef6
-        }
 
         /* Modal styles */
         .modal {
@@ -293,6 +322,18 @@
             color: #020c33;
             z-index: 100;
         }
+
+        .link-button {
+            text-decoration-line: underline;
+            cursor: pointer;
+        }
+
+        .mainTable thead {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2;
+            /* Light gray */
+        }
     </style>
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
@@ -305,9 +346,24 @@
             <p>This web app was created to help Penn State student schedule their GEN ED course in a more efficent way.
                 This tools allows you to: <br /> - generate a suggested course set for minimize wasted credits<br /> -
                 see and sort all GEN ED course quickly<br /> - find course to fit your schedule and interests <br />
-                <br /> This tool is very early in development and will be updated regularly, there will be bugs and
+                <br /> This tool is very early in development and will be updated, there will be bugs and
                 design-flaws, so if you have any feedback or comments, feel free to reach me at llsadoulet@gmail.com
                 <br />I hope this tool help! <br />-Lucas
+            </p>
+        </div>
+    </div>
+    <div id="move3Modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideInfoMove()">&times;</span>
+            <p>Move "3" in Knowledge Domains: <br />Instead of taking the required credits GN, GHW, GA, GH, and GS, a
+                student
+                can move three credits from one knowledge domain into a different knowledge domain. The exception to
+                this is that a student cannot take 3 credits out of GHW because the domain cannot go down to 0 credits.
+                <br />
+                <br />
+                reference:<a href="https://advising.engr.psu.edu/degree-requirements/general-education.aspx"
+                    target="_blank" rel="noopener noreferrer">Penn State
+                    Information on Substitutions</a>
             </p>
         </div>
     </div>
@@ -315,7 +371,7 @@
     <div class="title-container">
         <h1>PSU GenEd Compass</h1>
         <h5 style="justify-content: left;top: 1.8vw;position: relative;padding-right: .3vw;text-align: right;">version:
-            1.0<br>last update: 3/15/24</h5>
+            1.1<br>last update: 3/19/24</h5>
     </div>
 
 
@@ -333,13 +389,14 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject1Value">5</span>
+            <span class='ratio-text' id="subject1Value"></span>
+
             <table class="course-list" id="addedCoursesTable_subject1">
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width:  5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -355,13 +412,13 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject2Value">5</span>
+            <span class='ratio-text' id="subject2Value"></span>
             <table class="course-list" id="addedCoursesTable_subject2">
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -383,7 +440,7 @@
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -399,13 +456,14 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject4Value">5</span>
+            <span class='ratio-text' id="subject4Value"></span>
+            <span class='move-3-text' id="subject4Move" onclick="showInfoMove()"></span>
             <table class="course-list" id="addedCoursesTable_subject4">
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -421,13 +479,14 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject5Value">5</span>
+            <span class='ratio-text' id="subject5Value"></span>
+            <span class='move-3-text' id="subject5Move"></span>
             <table class="course-list" id="addedCoursesTable_subject5">
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -443,13 +502,15 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject6Value">5</span>
+            <span class='ratio-text' id="subject6Value"></span>
+            <span class='move-3-text' id="subject6Move" onclick="showInfoMove()"></span>
+
             <table class="course-list" id="addedCoursesTable_subject6">
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -465,13 +526,16 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject7Value">5</span>
+            <span class='ratio-text' id="subject7Value"></span>
+            <span class='move-3-text' id="subject7Move" onclick="showInfoMove()"></span>
+
             <table class="course-list" id="addedCoursesTable_subject7">
+
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -487,13 +551,14 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject8Value">5</span>
+            <span class='ratio-text' id="subject8Value"></span>
+            <span class='move-3-text' id="subject8Move" onclick="showInfoMove()"></span>
             <table class="course-list" id="addedCoursesTable_subject8">
                 <thead>
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -515,7 +580,7 @@
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -537,7 +602,7 @@
                     <tr>
                         <th style="width: 25%">Course</th>
                         <th style="width: 50%">Title</th>
-                        <th style="width: 10%;"></th>
+                        <th style="width: 5%;"></th>
                         <th style="width: 20%;"></th>
                     </tr>
                 </thead>
@@ -572,8 +637,10 @@
         <div class="container">
             <div>
                 <input type="text" id="courseCodeInput" placeholder="Course Code" oninput="updateTable()">
-                <input type="text" id="classNumberInput" placeholder="Course Number" oninput="updateTable()">
-                <input type="number" id="creditsInput" placeholder="Min. Credits" oninput="updateTable()">
+                <input type="text" id="courseNumberInput" placeholder="Course Number" oninput="updateTable()">
+                <input type="text" style="width:60%" id="courseNameInput" placeholder="Course Title"
+                    oninput="updateTable()">
+                <input type="number" style="width:20%" id="creditsInput" placeholder="Credits" oninput="updateTable()">
             </div>
             <div class="grid-container">
 
@@ -631,9 +698,9 @@
             <thead>
                 <tr>
                     <th style="width: 20%;">Course</th>
-                    <th style="width: 40%;">Title</th>
+                    <th style="width: 50%;">Title</th>
                     <th style="width: 10%;"></th>
-                    <th style="width: 20%;">Domains</th>
+                    <th style="width: 30%;">Domains</th>
                     <th style="width: 10%;"></th>
                 </tr>
             </thead>
@@ -641,6 +708,8 @@
                 <!-- Table content will be dynamically updated here -->
             </tbody>
         </table>
+
+
 
 
     </div>
@@ -665,6 +734,9 @@
         }
 
         var unadded_dataset = []
+
+
+
 
         function toBinaryArray(numbers, credits) {
             const binaryArray = [];
@@ -736,8 +808,11 @@
             const courseCode = document.getElementById("courseCodeInput");
             courseCode.value = "";
 
-            const courseKey = document.getElementById("classNumberInput");
+            const courseKey = document.getElementById("courseNumberInput");
             courseKey.value = "";
+
+            const courseName = document.getElementById("courseNameInput");
+            courseName.value = "";
 
             const gridItems = document.getElementsByClassName("grid-item");
             console.log(gridItems)
@@ -842,6 +917,20 @@
             });
         }
 
+        function markCompleteness(completeArray, incompleteArray) {
+            // Initialize an array to store completeness markers
+            var completenessArray = [];
+
+            // Iterate over the complete array
+            for (var i = 0; i < completeArray.length; i++) {
+                // Check if the current element is in the incomplete array
+                if (!incompleteArray.includes(completeArray[i])) {
+                    completenessArray.push(i); // If present, assign 1
+                }
+            }
+
+            return completenessArray;
+        }
 
         async function fetchData() {
             // Specify the path to your JSON file
@@ -862,6 +951,7 @@
                 // Extract the list from the JSON data
                 console.log(data)
                 unadded_dataset = data;
+                complete_dataset = data;
 
                 // Now you can use itemList as your list of items
                 console.log("List of items:", unadded_dataset);
@@ -911,6 +1001,7 @@
 
         const addedCourses = [[], [], [], [], [], [], [], [], [], []];
         selected_filter = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
         function toggleColor(element, number) {
 
             selected_filter[number] = [1, 0][selected_filter[number]]
@@ -927,6 +1018,9 @@
             return total;
         }
 
+        function link_move_3() {
+
+        }
         function createRow(tableBody, entry, perfect) {
             const row = document.createElement('tr');
             const courseCodeCell = document.createElement('td');
@@ -938,6 +1032,15 @@
             const actionsCell = document.createElement('td');
 
             courseCodeCell.textContent = entry.courseCode + " " + entry.courseNumber;
+            courseCodeCell.classList.add("link-button")
+            courseCodeCell.addEventListener('click', function () {
+
+                console.log(">>", markCompleteness(complete_dataset, unadded_dataset))
+                //window.open("http://127.0.0.1:5500/PennStateGenEd.html");
+                //getCourseDescription(entry.courseCode + " " + entry.courseNumber)
+                window.open("https://bulletins.psu.edu/search/?P=" + entry.courseCode + "%20" + entry.courseNumber, '_blank', 'noopener,noreferrer');
+
+            });
             courseNameCell.textContent = entry.courseName;
             courseCreditCell.textContent = entry.credit;
             // Map qualification numbers to titles for display
@@ -946,7 +1049,7 @@
             qualificationsCell.textContent = qualificationTitles.join(' ');
 
             if (entry.courseCode.toLowerCase().startsWith(courseCodeInput) ||
-                entry.courseNumber.toLowerCase().startsWith(classNumberInput)) {
+                entry.courseNumber.toLowerCase().startsWith(courseNumberInput)) {
 
             }
 
@@ -956,11 +1059,10 @@
             addButton.classList.add("center_button")
 
             if (perfect) {
-                console.log("perfect")
-                row.classList.add("perfect-row")
+                row.setAttribute('data-theme', 'perfect-row');
             }
 
-            addButton.addEventListener('click', () => addToQualification(entry));
+            addButton.addEventListener('click', () => addToQualification(entry, row));
             /* const removeButton = document.createElement('button');
             removeButton.textContent = 'Remove';
             removeButton.addEventListener('click', () => removeFromQualification(entry)); */
@@ -979,9 +1081,20 @@
 
         function updateTable() {
             const courseCodeInput = document.getElementById('courseCodeInput').value.trim().toLowerCase();
-            const classNumberInput = document.getElementById('classNumberInput').value.trim().toLowerCase();
+            const courseNumberInput = document.getElementById('courseNumberInput').value.trim().toLowerCase();
+            const courseNameInput = document.getElementById('courseNameInput').value.trim().toLowerCase();
             const creditInput = document.getElementById('creditsInput').value.trim().toLowerCase();
 
+
+            selected_filter_count = 0
+            selected_filter.forEach(num => {
+                selected_filter_count += num;
+            })
+
+            perfect_rows = true
+            if (courseCodeInput == "" && courseNumberInput == "" && courseNameInput == "" && creditInput <= 0 && selected_filter_count == 0) {
+                perfect_rows = false
+            }
             unadded_dataset.sort((a, b) => {
                 var a_count = sum_filter(a)
                 var b_count = sum_filter(b)
@@ -995,18 +1108,13 @@
                 }
                 return a.courseNumber.localeCompare(b.courseNumber);
             });
-            selected_filter_count = 0
-            selected_filter.forEach(num => {
-                selected_filter_count += num;
-            })
-
             const filteredDataStart = unadded_dataset.filter(entry =>
                 entry.courseCode.toLowerCase().startsWith(courseCodeInput) &&
-                entry.courseNumber.toLowerCase().startsWith(classNumberInput) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.credit == creditInput || creditInput <= 0)
+                entry.courseNumber.toLowerCase().startsWith(courseNumberInput) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.credit == creditInput || creditInput <= 0) && (entry.courseName.toLowerCase().indexOf(courseNameInput) >= 0) && perfect_rows
             );
             const filteredDataContain = unadded_dataset.filter(entry =>
                 (entry.courseCode.toLowerCase().indexOf(courseCodeInput) >= 0 &&
-                    entry.courseNumber.toLowerCase().indexOf(classNumberInput) >= 0) && !filteredDataStart.includes(entry) && (sum_filter(entry) >= 1 || selected_filter_count == 0) && (entry.credit >= creditInput)
+                    entry.courseNumber.toLowerCase().indexOf(courseNumberInput) >= 0) && !filteredDataStart.includes(entry) && (sum_filter(entry) >= 1 || selected_filter_count == 0) && (entry.credit >= creditInput) && (entry.courseName.toLowerCase().indexOf(courseNameInput) >= 0)
             );
 
             // var accepted_course = filteredDataStart.concat(filteredDataContain);
@@ -1082,9 +1190,12 @@
                         const courseNameCell = document.createElement('td');
                         const courseCreditCell = document.createElement('td');
                         const actionsCell = document.createElement('td');
-
+                        // Opens the link in a new tab
 
                         courseCodeCell.textContent = course.courseCode + " " + course.courseNumber;
+                        courseCodeCell.href = "https://bulletins.psu.edu/search/?P=" + course.courseCode + "%20" + course.courseNumber;
+                        courseCodeCell.target = '_blank';
+
                         courseNameCell.textContent = course.courseName;
                         courseCreditCell.textContent = course.credit;
 
@@ -1125,13 +1236,20 @@
                 var subjectTable = document.getElementById(`addedCoursesTable_subject${i}`);
 
                 const ratio = subjectTable.parentElement.querySelector('.ratio-text');
+                const move_3_element = subjectTable.parentElement.querySelector('.move-3-text');
+
+                if (filled - 3 >= qualificationSize[i] && i <= 8 && i >= 4 && i != 5 && move_3_element) {
+                    move_3_element.innerHTML = "Move-3 Possible"
+                }
                 ratio.innerHTML = filled + " of " + qualificationSize[i] + " credits"
+
+
 
                 filled = Math.min(filled, qualificationSize[i])
 
 
                 const sliderIndicator = subjectTable.parentElement.querySelector('.position-indicator');
-                sliderIndicator.style.width = filled * fill_width + "%"
+                sliderIndicator.style.width = (filled / qualificationSize[i]) * 100 + "%"
 
                 const sliderTrack = subjectTable.parentElement.querySelector('.slider-track');
                 sliderTrack.style.width = qualificationSize[i] * fill_width + "%"
@@ -1145,7 +1263,7 @@
                     sliderIndicator.style.backgroundColor = "#008755";
                 }
                 else {
-                    sliderIndicator.style.backgroundColor = "#49b3d6";
+                    sliderIndicator.style.backgroundColor = "#7b80d9";
                 }
             }
         }
@@ -1165,7 +1283,8 @@
             updateQualificationTables()
             updateTable()
         }
-        function addToQualification(course) {
+        function addToQualification(course, row) {
+            row.remove()
             console.log(unadded_dataset, added_dataset)
 
             console.log("adds:", course)
@@ -1178,7 +1297,7 @@
             console.log(unadded_dataset, added_dataset)
 
             updateQualificationTables()
-            updateTable()
+            //updateTable()
         }
         function updateAddedCoursesTable(sliderId) {
             // Update the table for the added courses based on the sliderId
@@ -1234,7 +1353,35 @@
             if (event.target == modal) {
                 hideInfo();
             }
+            if (event.target == modalmove) {
+                hideInfoMove();
+            }
         };
+
+
+        // Get the modal
+        const modalmove = document.getElementById('move3Modal');
+
+        // Get the <span> element that closes the modal
+        const closeBtnMove = document.getElementsByClassName('close')[1];
+
+        // Function to show the modal
+        function showInfoMove() {
+            modalmove.style.display = 'block';
+        }
+
+        // Function to hide the modal
+        function hideInfoMove() {
+            modalmove.style.display = 'none';
+        }
+
+        // Close the modal when the user clicks on the close button
+        closeBtnMove.onclick = hideInfoMove;
+
+
+        // Close the modal when the user clicks anywhere outside the modal
+
+
     </script>
 
 </body>
