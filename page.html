@@ -85,12 +85,19 @@
         }
 
         .position-indicator {
+
             position: absolute;
             height: 15px;
             width: 0px;
             background-color: red;
             border-radius: .25rem;
 
+        }
+
+        .gradient-green {
+            background: linear-gradient(45deg, #4CAF50 25%, transparent 25%, transparent 50%, #4CAF50 50%, #4CAF50 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            /* Adjust size to control diagonal line density */
         }
 
         /* Blue indicator if position is 6 or greater */
@@ -127,6 +134,8 @@
             /* Add this line to ensure no spacing between cells */
             margin-top: -1vw;
         }
+
+
 
 
 
@@ -195,8 +204,8 @@
 
         input {
             padding: 8px;
-            margin-bottom: 3px;
-            width: calc(40%);
+            margin-bottom: -1px;
+            width: calc(50%);
             display: inline-block;
         }
 
@@ -207,7 +216,7 @@
             display: flex;
             margin: .2vw;
             background-color: #c1b7f2;
-            color: #5c5ce6;
+            color: #10226a;
             border: 0px;
             border-radius: 5px;
             width: 2vw;
@@ -218,8 +227,15 @@
             align-items: center;
             cursor: pointer;
             padding-bottom: 0.2vw;
+            border: #10226a 1px solid;
 
+        }
 
+        .suggest_button {
+            padding-left: 2vw;
+            padding-right: 2vw;
+            font-size: small;
+            width: 36%;
         }
 
         .course-item {
@@ -255,6 +271,7 @@
             overflow-y: auto;
             max-height: 30vw;
             display: block;
+            margin-bottom: 1vw;
         }
 
         .grid-container {
@@ -266,6 +283,7 @@
 
             scale: .8;
             transform: translate(-1vw, .5vw);
+
         }
 
         .grid-item {
@@ -354,6 +372,12 @@
             background-color: #f2f2f2;
             /* Light gray */
         }
+
+        .clear-button {
+            width: 4vw;
+            height: 2.5vw;
+            translate: -.25vw .25vw
+        }
     </style>
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
@@ -391,7 +415,7 @@
     <div class="title-container">
         <h1>PSU GenEd Compass</h1>
         <h5 style="justify-content: left;top: 1.8vw;position: relative;padding-right: .3vw;text-align: right;">version:
-            1.2<br>last update: 3/21/24</h5>
+            1.3<br>last update: 3/24/24</h5>
     </div>
 
 
@@ -565,8 +589,8 @@
             <table class="course-list" id="addedCoursesTable_subject6">
                 <thead>
                     <tr>
-                        <th style="width: 25%">Course</th>
-                        <th style="width: 60%">Title</th>
+                        <th style="width:  25%">Course</th>
+                        <th style="width:  60%">Title</th>
                         <th style="width:  5%;"></th>
                         <th style="width: 10%;"></th>
                     </tr>
@@ -675,16 +699,8 @@
     <div class="class-lookup-container">
 
         <h2>Generate Schedule</h2>
-        <button onclick="generate('least')" style="
-        background: #5c5ce6;
-        color: white;
-        border-radius: 5px;
-        padding: .4vw;
-            padding-right: 0.4vw;
-            padding-left: 0.4vw;
-        border: black 0px solid;
-        padding-left: 2vw;
-        padding-right: 2vw;
+        <button class="center_button suggest_button" onclick="generate('least')" style="
+        
 
   ">Suggest Schedule</button>
         <h5 id="generate_time" style="position: relative;
@@ -708,10 +724,12 @@
         <div class="container">
             <div>
                 <input type="text" id="courseCodeInput" placeholder="Course Code" oninput="updateTable()">
-                <input type="text" id="courseNumberInput" placeholder="Course Number" oninput="updateTable()">
+                <input type="number" style="width:20%" id="creditsInput" placeholder="Credits" oninput="updateTable()">
                 <input type="text" style="width:60%" id="courseNameInput" placeholder="Course Title"
                     oninput="updateTable()">
-                <input type="number" style="width:20%" id="creditsInput" placeholder="Credits" oninput="updateTable()">
+                <button class="clear-button center_button" id="clearInput" onclick="clearInputs()">
+                    < </button>
+
             </div>
             <div class="grid-container">
 
@@ -845,6 +863,7 @@
 
             return constants[0];
         }
+
         function removeDuplicates(arr) {
             // Create an empty object to store unique arrays
             const uniqueArrays = {};
@@ -865,29 +884,29 @@
             return uniqueArray;
         }
 
-
         function capArray(maxArray, arr) {
             // Check if the arrays have the same length
 
             // Iterate through the 2D array
             for (let i = 0; i < arr.length; i++) {
                 // Check if the subarray has the same length as the "max" array
-                if (arr[i].length !== maxArray.length) {
+                if (arr[i][1].length !== maxArray.length) {
                     console.log(arr[i], maxArray)
                     throw new Error('Subarrays must have the same length as the max array');
                 }
 
                 // Iterate through the elements of the subarray
-                for (let j = 0; j < arr[i].length; j++) {
+                for (let j = 0; j < arr[i][1].length; j++) {
                     // Replace the element if it exceeds the corresponding element in the "max" array
-                    if (arr[i][j] > maxArray[j]) {
-                        arr[i][j] = maxArray[j];
+                    if (arr[i][1][j] > maxArray[j]) {
+                        arr[i][1][j] = maxArray[j];
                     }
                 }
             }
 
             return arr;
         }
+
         function selectItems(requirements, items, depth = 0) {
             if (depth > 10) {
                 return []
@@ -899,7 +918,7 @@
             var items_cleaned_capped = capArray(remainingRequirements, items_set)
             var items_cleaned = removeDuplicates(items_cleaned_capped)
 
-            const sortedItems = items_cleaned.slice().sort((a, b) => matchValue(b, remainingRequirements) / findN(b) - matchValue(a, remainingRequirements) / findN(a));
+            const sortedItems = items_cleaned.slice().sort((a, b) => matchValue(b, remainingRequirements) - matchValue(a, remainingRequirements));
 
             const subSolvesSet = [];
             width = [5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3][depth]
@@ -909,7 +928,7 @@
                 const bestOption = sortedItems[i];
 
                 //console.log("best ", i, " ", bestOption)
-                const newRemainingRequirements = [...remainingRequirements.map((req, index) => Math.max(req - bestOption[index], 0))];
+                const newRemainingRequirements = [...remainingRequirements.map((req, index) => Math.max(req - bestOption[1][index], 0))];
                 //console.log("req ", newRemainingRequirements)
 
                 //console.log(requirements, bestOption)
@@ -921,13 +940,8 @@
 
                 const solve = selectItems(newRemainingRequirements, sortedItems.slice(i - 1), depth + 1);
                 //console.log("solve", solve)
-                reduced_solution = []
-                for (let i = 0; i < bestOption.length; i++) {
-                    // If the value of array b at index i is greater than 0, keep the value from array two
-                    // Otherwise, set it to 0
-                    reduced_solution.push(remainingRequirements[i] > 0 ? bestOption[i] : 0);
-                }
-                const subSolution = solve.concat([reduced_solution]);
+
+                const subSolution = solve.concat([solve]);
                 subSolvesSet.push(subSolution);
             }
 
@@ -951,6 +965,7 @@
 
             return n;
         }
+
         function findMinimumCredit(items, binaryArray) {
             let minCredit = Infinity;
 
@@ -978,20 +993,144 @@
             return minCredit === Infinity ? null : minCredit;
         }
 
-        function setSort(qualifications, credit) {
 
-            console.log(qualifications)
+
+        function reduceQuals(remainingCredits, courses) {
+            var reduced_array = []
+            courses.forEach(course => {
+                for (var j = 0; j < course[1].length; j++) {
+                    if (remainingCredits[j] <= 0) {
+                        course[1][j] = 0
+                    }
+                }
+                reduced_array.push(course.slice())
+            })
+            return reduced_array;
+        }
+
+        function clearInputs() {
             const inputElement = document.getElementById("creditsInput");
-            inputElement.value = credit;
+            inputElement.value = "";
 
             const courseCode = document.getElementById("courseCodeInput");
             courseCode.value = "";
 
-            const courseKey = document.getElementById("courseNumberInput");
-            courseKey.value = "";
-
             const courseName = document.getElementById("courseNameInput");
             courseName.value = "";
+
+        }
+
+        function getCourseScore(course_credits, remaining) {
+
+            maximum = Math.max(remaining)
+            var score = 0;
+            var extra = 0
+            for (var i = 0; i < remaining.length; i++) {
+
+                if (course_credits[1][i]) {
+
+                    if (i == 6) {
+                        extra = 100
+                    }
+                    score += course_credits[0] + Math.min(remaining[i] - course_credits[0], 0)
+                }
+
+            }
+            var new_score = (score / course_credits[0]) + extra
+            console.log(new_score, course_credits[1])
+            return new_score
+        }
+
+        function removeDuplicates(array) {
+            // Create an empty object to keep track of unique objects
+            let uniqueObjects = {};
+
+            // Filter the array to keep only unique objects
+            let uniqueArray = array.filter(obj => {
+                // Generate a unique key based on object parameters
+                let key = obj[0] + " " + obj[1];
+
+                // If the key does not exist in the uniqueObjects map, add the object
+                if (!uniqueObjects[key]) {
+                    uniqueObjects[key] = true;
+                    return true;
+                }
+
+                // If the key already exists, filter out the duplicate object
+                return false;
+            });
+
+            return uniqueArray;
+        }
+
+        function optimalCourses(remainingCredits, courses, depth = 0) {
+
+
+            console.log("reducing quals", remainingCredits.length, courses.length)
+
+
+
+            var courses_reduced = reduceQuals(remainingCredits, courses)
+
+
+            courses_reduced = JSON.parse(JSON.stringify(courses_reduced));
+            console.log("done reducing quals", courses_reduced)
+
+
+
+            courses_reduced_filled = courses_reduced.filter(subArray => !(subArray[1].every(element => element === 0)));
+            console.log(".>", courses_reduced_filled)
+            var filtered_courses = removeDuplicates(courses_reduced_filled)
+
+
+
+            console.log(">", filtered_courses)
+
+            var sorted_courses = filtered_courses.sort((a, b) => getCourseScore(b, remainingCredits) > getCourseScore(a, remainingCredits));
+
+            //var sorted_courses = filtered_courses.sort((a, b) => {
+            //    return getCourseScore(b, remainingCredits) - getCourseScore(a, remainingCredits) || matchValue(b, remainingCredits) - matchValue(a, remainingCredits);
+            //});
+
+
+            console.log(">>", sorted_courses)
+
+
+
+            var best = [sorted_courses[0][0], sorted_courses[0][1].slice()]
+
+            console.log("remaining", remainingCredits)
+
+            for (var i = 0; i < remainingCredits.length; i++) {
+                remainingCredits[i] = Math.max(remainingCredits[i] - best[0] * best[1][i], 0)
+            }
+
+            console.log("reduced remaining", remainingCredits)
+            console.log("best", best[1])
+
+            if (remainingCredits.every(element => element === 0)) {
+                console.log("done!")
+                return [best]
+            }
+            console.log("depth:", depth)
+
+            console.log("best1:", best)
+            solve = optimalCourses(remainingCredits, sorted_courses, depth + 1)
+            console.log("best2:", best)
+
+            return solve.concat([best.slice()])
+
+
+
+
+        }
+
+        function setSort(qualifications, credit) {
+
+            console.log(qualifications)
+            clearInputs()
+            const inputElement = document.getElementById("creditsInput");
+            inputElement.value = credit;
 
             const gridItems = document.getElementsByClassName("grid-item");
             console.log(gridItems)
@@ -1017,7 +1156,6 @@
 
         }
 
-        // should be reducing during picking phase, not high priority:
         function reduceRequirements(entry, requirements) {
             for (var i = 0; i < entry.length; i++) {
                 if (requirements[i] <= 0) {
@@ -1027,29 +1165,10 @@
             return entry
         }
 
-
         function generate(type) {
             // Cache DOM elements
 
             // convert added_dataset to hexcodes
-            indexes = markCompleteness(complete_dataset, added_dataset)
-            console.log(indexes)
-            extended_hex = ""
-
-            indexes.forEach(index => {
-                hex = index.toString(16).toUpperCase();
-
-                for (var i = 0; i < 3 - hex.length; i++) {
-                    extended_hex += "0"
-                }
-                extended_hex += hex;
-
-            })
-            const newURL = "http://127.0.0.1:5500/PennStateGenEd.html" + '?courses=' + encodeURIComponent(extended_hex);
-
-            // Update the URL without reloading the page
-            history.pushState(null, '', newURL);
-            console.log(extended_hex)
 
 
             const startTime = performance.now();
@@ -1079,22 +1198,25 @@
                     domainSet[domains] = 1;
                 }
 
-                binarySet.push(toBinaryArray(course.qualifications, parseFloat(course.credit)));
+                binarySet.push([parseFloat(course.credit), toBinaryArray(course.qualifications, 1)]);
             }
 
             completeBinarySet = [...binarySet]
             // Perform item selection based on requirements
 
             console.log("Starting Generation")
-            const suggestedPlan = selectItems(requirements, binarySet).reverse();
+            //const suggestedPlan = selectItems(requirements, binarySet).reverse();
+            console.log(binarySet)
+            const suggestedPlan = optimalCourses(requirements, binarySet).reverse();
             console.log("Done Generation")
 
             // Generate table rows
             suggestedPlan.forEach(entry => {
-                const credits = findN(entry);
+                console.log(entry)
+                const credits = entry[0];
 
                 console.log(entry)
-                const reducedEntry = reduceRequirements(entry, requirements);
+                const reducedEntry = entry[1];
 
                 const row = document.createElement('tr');
                 const qualificationsCell = document.createElement('td');
@@ -1111,10 +1233,11 @@
 
                 qualificationsCell.textContent = qualificationSet.join(', ');
                 courseCreditCell.textContent = credits;
+                courseCreditCell.style.textAlign = "center";
 
                 // Create and attach Sort button
                 const sortButton = document.createElement('button');
-                sortButton.textContent = '#';
+                sortButton.textContent = '⇓';
                 sortButton.classList.add("center_button");
                 sortButton.addEventListener('click', () => setSort(reducedEntry, credits));
                 actionsCell.appendChild(sortButton);
@@ -1133,7 +1256,6 @@
 
         }
 
-
         function markCompleteness(completeArray, incompleteArray) {
             // Initialize an array to store completeness markers
             var completenessArray = [];
@@ -1148,7 +1270,6 @@
 
             return completenessArray;
         }
-
 
         async function fetchData() {
             // Specify the path to your JSON file
@@ -1169,7 +1290,7 @@
                 // Extract the list from the JSON data
                 const filteredData = data.filter(obj => {
 
-                    if (obj.courseName.toLowerCase().indexOf("special topics") > -1) {
+                    if (obj.courseName.toLowerCase().indexOf("special topics") > -1 || obj.courseName.toLowerCase().indexOf("foreign studies") > -1) {
                         console.log(obj)
                         return false
                     }
@@ -1199,6 +1320,33 @@
             updateQualificationTables()
             updateTable()
 
+            const clearInput = document.getElementById("clearInput");
+            const codeInput = document.getElementById("courseCodeInput");
+
+            clearInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Tab') {
+                    event.preventDefault();
+                    codeInput.focus();
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Delete') {
+                    clearInputs()
+                }
+            });
+
+            let numberInput = document.getElementById('creditsInput');
+
+            numberInput.addEventListener('input', function () {
+
+                let value = parseFloat(numberInput.value);
+
+                if (value <= 0) {
+                    numberInput.value = "";
+                }
+            });
+
             const urlParams = new URLSearchParams(window.location.search);
             var metadata = urlParams.get('courses')
             console.log(">>>>", metadata)
@@ -1217,7 +1365,6 @@
 
         }
 
-        // Call the fetchData function to start the process
         fetchData();
         qualificationMap = [
             'Quantification [GQ]',
@@ -1283,6 +1430,8 @@
 
             courseCodeCell.textContent = entry.courseCode + " " + entry.courseNumber;
             courseCodeCell.classList.add("link-button")
+            courseCreditCell.style.textAlign = "center";
+
             courseCodeCell.addEventListener('click', function () {
 
                 console.log(">>", markCompleteness(complete_dataset, unadded_dataset))
@@ -1297,11 +1446,6 @@
             const qualificationTitles = entry.qualifications.map(getQualificationTitle);
 
             qualificationsCell.textContent = qualificationTitles.join(' ');
-
-            if (entry.courseCode.toLowerCase().startsWith(courseCodeInput) ||
-                entry.courseNumber.toLowerCase().startsWith(courseNumberInput)) {
-
-            }
 
             // Add "Add" and "Remove" buttons
             const addButton = document.createElement('button');
@@ -1330,10 +1474,31 @@
         }
 
         function updateTable() {
-            const courseCodeInput = document.getElementById('courseCodeInput').value.trim().toLowerCase();
-            const courseNumberInput = document.getElementById('courseNumberInput').value.trim().toLowerCase();
+            const courseCodeNumberInput = document.getElementById('courseCodeInput').value.trim().toLowerCase();
+            //const courseNumberInput = document.getElementById('courseNumberInput').value.trim().toLowerCase();
             const courseNameInput = document.getElementById('courseNameInput').value.trim().toLowerCase();
             const creditInput = document.getElementById('creditsInput').value.trim().toLowerCase();
+
+
+
+
+            let firstNumberPattern = /\d/;
+
+            let firstNumberIndex = courseCodeNumberInput.search(firstNumberPattern);
+
+            let courseCodeInput = courseCodeNumberInput.substring(0, firstNumberIndex).trim();
+
+            let courseNumberInput = courseCodeNumberInput.substring(firstNumberIndex).trim();
+
+
+            console.log("|" + courseCodeInput + "|" + courseNumberInput + "|")
+
+            if (!firstNumberPattern.test(courseNumberInput)) {
+                courseCodeInput = courseNumberInput
+                courseNumberInput = ""
+            }
+            console.log(">" + courseCodeInput + "|" + courseNumberInput + "|")
+
 
 
             selected_filter_count = 0
@@ -1362,9 +1527,14 @@
                 entry.courseCode.toLowerCase().startsWith(courseCodeInput) &&
                 entry.courseNumber.toLowerCase().startsWith(courseNumberInput) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.credit == creditInput || creditInput <= 0) && (entry.courseName.toLowerCase().indexOf(courseNameInput) >= 0) && perfect_rows
             );
-            const filteredDataContain = unadded_dataset.filter(entry =>
+            /*const filteredDataContain = unadded_dataset.filter(entry =>
                 (entry.courseCode.toLowerCase().indexOf(courseCodeInput) >= 0 &&
                     entry.courseNumber.toLowerCase().indexOf(courseNumberInput) >= 0) && !filteredDataStart.includes(entry) && (sum_filter(entry) >= 1 || selected_filter_count == 0) && (entry.credit >= creditInput) && (entry.courseName.toLowerCase().indexOf(courseNameInput) >= 0)
+            );*/
+
+            const filteredDataContain = unadded_dataset.filter(entry =>
+                (entry.courseCode.toLowerCase().indexOf(courseCodeInput) >= 0 &&
+                    entry.courseNumber.toLowerCase().indexOf(courseNumberInput) >= 0) && !filteredDataStart.includes(entry) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.courseName.toLowerCase().indexOf(courseNameInput) >= 0)
             );
 
             // var accepted_course = filteredDataStart.concat(filteredDataContain);
@@ -1517,16 +1687,24 @@
                 else
                 */
                 if (filled >= qualificationSize[i]) {
-                    sliderIndicator.style.backgroundColor = "#008755";
+                    sliderIndicator.style.backgroundColor = "#069128";
+                    sliderIndicator.classList.add("gradient-green")
                 }
                 else {
                     sliderIndicator.style.backgroundColor = "#7b80d9";
+                    try {
+                        sliderIndicator.classList.remove("gradient-green")
+                    }
+                    catch {
+
+                    }
                 }
             }
         }
 
 
         function removeFromQualification(course) {
+
             course_count -= 1;
             const course_counter = document.getElementById('course_counter');
             course_counter.innerHTML = course_count
@@ -1548,8 +1726,28 @@
 
             updateQualificationTables()
             updateTable()
+            indexes = markCompleteness(complete_dataset, added_dataset)
+            console.log(indexes)
+            extended_hex = ""
+
+            indexes.forEach(index => {
+                hex = index.toString(16).toUpperCase();
+
+                for (var i = 0; i < 3 - hex.length; i++) {
+                    extended_hex += "0"
+                }
+                extended_hex += hex;
+
+            })
+            const newURL = "http://127.0.0.1:5500/PennStateGenEd.html" + '?courses=' + encodeURIComponent(extended_hex);
+
+            // Update the URL without reloading the page
+            history.pushState(null, '', newURL);
+
         }
         function addToQualification(course, row) {
+
+
             course_count += 1
             const course_counter = document.getElementById('course_counter');
             course_counter.innerHTML = course_count
@@ -1574,6 +1772,24 @@
 
             updateQualificationTables()
             //updateTable()
+            indexes = markCompleteness(complete_dataset, added_dataset)
+            console.log(indexes)
+            extended_hex = ""
+
+            indexes.forEach(index => {
+                hex = index.toString(16).toUpperCase();
+
+                for (var i = 0; i < 3 - hex.length; i++) {
+                    extended_hex += "0"
+                }
+                extended_hex += hex;
+
+            })
+            const newURL = "http://127.0.0.1:5500/PennStateGenEd.html" + '?courses=' + encodeURIComponent(extended_hex);
+
+            // Update the URL without reloading the page
+            history.pushState(null, '', newURL);
+
         }
         function updateAddedCoursesTable(sliderId) {
             // Update the table for the added courses based on the sliderId
