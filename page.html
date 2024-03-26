@@ -380,6 +380,7 @@
         .link-button {
             text-decoration-line: underline;
             cursor: pointer;
+            color: #10044f;
         }
 
         .mainTable thead {
@@ -464,7 +465,7 @@
                     <td>Here you can search for courses based on the course code, name, credits, and domains.
                         The search
                         will show you all perfect matches in blue, and all close matches in grey. You can clear the
-                        filters with [delete key] or the clear button.</td>
+                        filters with [delete] key or the clear button.</td>
                 </tr>
                 <tr>
                     <th>Courses</th>
@@ -499,8 +500,8 @@
             </table>
 
 
-            This tool is very early in development and will be updated. There will be bugs and
-            design-flaws, so if you have any feedback or comments, feel free to reach me at llsadoulet@gmail.com
+            This tool is in early in development and will be updated. There will be design-flaws, so if you have any
+            feedback or comments, feel free to reach me at llsadoulet@gmail.com
             <br />I hope this tool helps! <br />- Lucas
             </p>
         </div>
@@ -1001,7 +1002,6 @@
 
             }
             var new_score = (score / course_credits[0]) + extra
-            console.log(new_score, course_credits[1])
             return new_score
         }
 
@@ -1030,7 +1030,6 @@
         function optimalCourses(remainingCredits, courses, depth = 0) {
 
 
-            console.log("reducing quals", remainingCredits.length, courses.length)
 
 
 
@@ -1038,17 +1037,14 @@
 
 
             courses_reduced = JSON.parse(JSON.stringify(courses_reduced));
-            console.log("done reducing quals", courses_reduced)
 
 
 
             courses_reduced_filled = courses_reduced.filter(subArray => !(subArray[1].every(element => element === 0)));
-            console.log(".>", courses_reduced_filled)
             var filtered_courses = removeDuplicates(courses_reduced_filled)
 
 
 
-            console.log(">", filtered_courses)
 
             var sorted_courses = filtered_courses.sort((a, b) => getCourseScore(b, remainingCredits) > getCourseScore(a, remainingCredits));
 
@@ -1057,30 +1053,22 @@
             //});
 
 
-            console.log(">>", sorted_courses)
 
             if (sorted_courses.length == 0) return []
 
             var best = [sorted_courses[0][0], sorted_courses[0][1].slice()]
 
-            console.log("remaining", remainingCredits)
 
             for (var i = 0; i < remainingCredits.length; i++) {
                 remainingCredits[i] = Math.max(remainingCredits[i] - best[0] * best[1][i], 0)
             }
 
-            console.log("reduced remaining", remainingCredits)
-            console.log("best", best[1])
 
             if (remainingCredits.every(element => element === 0)) {
-                console.log("done!")
                 return [best]
             }
-            console.log("depth:", depth)
 
-            console.log("best1:", best)
             solve = optimalCourses(remainingCredits, sorted_courses, depth + 1)
-            console.log("best2:", best)
 
             return solve.concat([best.slice()])
 
@@ -1091,13 +1079,11 @@
 
         function setSort(qualifications, credit) {
 
-            console.log(qualifications)
             clearInputs()
             const inputElement = document.getElementById("creditsInput");
             inputElement.value = credit;
 
             const gridItems = document.getElementsByClassName("grid-item");
-            console.log(gridItems)
             for (var i = 0; i < qualifications.length; i++) {
 
                 if (qualifications[i] > 0) {
@@ -1115,7 +1101,6 @@
                 }
             }
 
-            console.log(selected_filter)
             updateTable()
 
         }
@@ -1167,11 +1152,8 @@
             completeBinarySet = [...binarySet]
             // Perform item selection based on requirements
 
-            console.log("Starting Generation")
             //const suggestedPlan = selectItems(requirements, binarySet).reverse();
-            console.log(binarySet)
             const suggestedPlan = optimalCourses(requirements, binarySet).reverse();
-            console.log("Done Generation")
 
             // Generate table rows
 
@@ -1191,11 +1173,9 @@
             count = 0
             suggestedPlan.forEach(entry => {
 
-                console.log(entry)
                 count += 1
                 const credits = entry[0];
 
-                console.log(entry)
                 const reducedEntry = entry[1];
 
                 const row = document.createElement('tr');
@@ -1278,7 +1258,6 @@
                 const filteredData = data.filter(obj => {
 
                     if (obj.courseName.toLowerCase().indexOf("special topics") > -1 || obj.courseName.toLowerCase().indexOf("foreign studies") > -1) {
-                        console.log(obj)
                         return false
                     }
                     else {
@@ -1287,13 +1266,11 @@
                     }
                 });
 
-                console.log(data)
                 unadded_dataset = filteredData;
 
                 complete_dataset = filteredData;
 
                 // Now you can use itemList as your list of items
-                console.log("List of items:", unadded_dataset);
 
                 // Continue with the rest of your code here
                 // ...
@@ -1334,20 +1311,26 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             var metadata = urlParams.get('courses')
-            console.log(">>>>", metadata)
             while (metadata.length > 0) {
                 hex = metadata.substring(0, 3)
                 dec = parseInt(hex, 16);
-                console.log(hex, dec)
                 addToQualification(complete_dataset[dec])
                 metadata = metadata.substring(3)
 
 
             }
 
-            updateTable()
-            updateQualificationTables()
-            generate("")
+            function myFunction() {
+                updateTable()
+                updateQualificationTables()
+                generate("")
+
+            }
+
+            let delayInMilliseconds = 1000;
+
+            setTimeout(myFunction, delayInMilliseconds);
+
 
         }
 
@@ -1421,7 +1404,6 @@
 
             courseCodeCell.addEventListener('click', function () {
 
-                console.log(">>", markCompleteness(complete_dataset, unadded_dataset))
                 //window.open("http://127.0.0.1:5500/PennStateGenEd.html");
                 //getCourseDescription(entry.courseCode + " " + entry.courseNumber)
                 window.open("https://bulletins.psu.edu/search/?P=" + entry.courseCode + "%20" + entry.courseNumber, '_blank', 'noopener,noreferrer');
@@ -1478,15 +1460,11 @@
             let courseNumberInput = courseCodeNumberInput.substring(firstNumberIndex).trim();
 
 
-            console.log("|" + courseCodeInput + "|" + courseNumberInput + "|")
 
             if (!firstNumberPattern.test(courseNumberInput)) {
                 courseCodeInput = courseNumberInput
                 courseNumberInput = ""
             }
-            console.log(">" + courseCodeInput + "|" + courseNumberInput + "|")
-
-
 
             selected_filter_count = 0
             selected_filter.forEach(num => {
@@ -1543,12 +1521,11 @@
                 createRow(tableBody, entry, false)
             });
 
-            console.log(filteredDataStart.length, filteredDataContain.length)
+
         }
 
         function getQualificationTitle(qualificationNumber) {
 
-            //console.log(qualificationNumber, qualificationMapAbbr[qualificationNumber - 1])
             if (selected_filter[qualificationNumber - 1])
                 return "<strong>" + qualificationMapAbbr[qualificationNumber - 1] + "</strong>" || ''//'Unknown Qualification';
 
@@ -1590,12 +1567,10 @@
                 }
 
             }
-            console.log(added_dataset)
             added_dataset.forEach(course => {
                 const qualifications = course.qualifications;
                 qualifications.forEach(qualification => {
                     // Find the matching slider and update its value
-                    console.log(">", qualification)
 
 
                     if (qualification) {
@@ -1608,7 +1583,7 @@
                         const courseCreditCell = document.createElement('td');
                         const actionsCell = document.createElement('td');
                         // Opens the link in a new tab
-
+                        courseCodeCell.classList.add("link-button")
                         courseCodeCell.textContent = course.courseCode + " " + course.courseNumber;
                         courseCodeCell.href = "https://bulletins.psu.edu/search/?P=" + course.courseCode + "%20" + course.courseNumber;
                         courseCodeCell.target = '_blank';
@@ -1643,7 +1618,7 @@
                         subjectTable.appendChild(row);
 
                         addedCourses[qualification - 1].push(course)
-                        console.log("added")
+
 
 
 
@@ -1711,20 +1686,17 @@
             credit_counter.innerHTML = credit_count
 
 
-            console.log(unadded_dataset, added_dataset)
 
-            console.log("removes:", course)
 
             //added_dataset.pop(course)
             added_dataset = added_dataset.filter(item => item !== course);
             unadded_dataset.push(course)
 
-            console.log(unadded_dataset, added_dataset)
 
             updateQualificationTables()
             updateTable()
             indexes = markCompleteness(complete_dataset, added_dataset)
-            console.log(indexes)
+
             extended_hex = ""
 
             indexes.forEach(index => {
@@ -1759,21 +1731,17 @@
             if (row)
                 row.remove()
 
-            console.log(unadded_dataset, added_dataset)
 
-            console.log("adds:", course)
 
             unadded_dataset = unadded_dataset.filter(item => item !== course);
             added_dataset.push(course)
             added_dataset
 
 
-            console.log(unadded_dataset, added_dataset)
 
             updateQualificationTables()
             //updateTable()
             indexes = markCompleteness(complete_dataset, added_dataset)
-            console.log(indexes)
             extended_hex = ""
 
             indexes.forEach(index => {
@@ -1794,9 +1762,7 @@
 
         function updateAddedCoursesTable(sliderId) {
             // Update the table for the added courses based on the sliderId
-            console.log(sliderId)
             const addedCoursesTable = document.getElementById(`addedCoursesTable_subject${sliderId + 1}`);
-            console.log(addedCoursesTable)
             addedCoursesTable.innerHTML = '';
 
             addedCourses[sliderId].forEach(course => {
