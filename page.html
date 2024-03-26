@@ -1444,7 +1444,6 @@
 
         function updateTable() {
             const courseCodeNumberInput = document.getElementById('courseCodeInput').value.trim().toLowerCase();
-            //const courseNumberInput = document.getElementById('courseNumberInput').value.trim().toLowerCase();
             const courseNameInput = document.getElementById('courseNameInput').value.trim().toLowerCase();
             const creditInput = document.getElementById('creditsInput').value.trim().toLowerCase();
 
@@ -1708,7 +1707,7 @@
                 extended_hex += hex;
 
             })
-            const newURL = "http://127.0.0.1:5500/PennStateGenEd.html" + '?courses=' + encodeURIComponent(extended_hex);
+            const newURL = "https://lucas-sadoulet.github.io/GenEdCompass/page.html" + '?courses=' + encodeURIComponent(extended_hex);
 
             // Update the URL without reloading the page
             history.pushState(null, '', newURL);
@@ -1753,7 +1752,7 @@
                 extended_hex += hex;
 
             })
-            const newURL = "http://127.0.0.1:5500/PennStateGenEd.html" + '?courses=' + encodeURIComponent(extended_hex);
+            const newURL = "https://lucas-sadoulet.github.io/GenEdCompass/page.html" + '?courses=' + encodeURIComponent(extended_hex);
 
             // Update the URL without reloading the page
             history.pushState(null, '', newURL);
