@@ -1229,6 +1229,7 @@
             // Iterate over the complete array
             for (var i = 0; i < incompleteArray.length; i++) {
                 // Check if the current element is in the incomplete array
+                console.log("course:", incompleteArray[i])
                 if (completeArray.includes(incompleteArray[i])) {
                     completenessArray.push(completeArray.indexOf(incompleteArray[i])); // If present, assign 1
                 }
@@ -1310,12 +1311,19 @@
             });
 
             const urlParams = new URLSearchParams(window.location.search);
-            var metadata = urlParams.get('courses')
+            var metadata = urlParams.get('courses') || ""
+
+            // I don't even know, this sorts the complete dataset...
+            addToQualification(complete_dataset[0])
+            removeFromQualification(complete_dataset[0])
+
             while (metadata.length > 0) {
                 hex = metadata.substring(0, 3)
                 dec = parseInt(hex, 16);
                 addToQualification(complete_dataset[dec])
-                metadata = metadata.substring(3)
+
+
+                metadata = metadata.substring(3) | ""
 
 
             }
@@ -1694,6 +1702,7 @@
 
             updateQualificationTables()
             updateTable()
+            console.log(complete_dataset)
             indexes = markCompleteness(complete_dataset, added_dataset)
 
             extended_hex = ""
@@ -1734,12 +1743,13 @@
 
             unadded_dataset = unadded_dataset.filter(item => item !== course);
             added_dataset.push(course)
-            added_dataset
+
 
 
 
             updateQualificationTables()
             //updateTable()
+            console.log("1.2", complete_dataset)
             indexes = markCompleteness(complete_dataset, added_dataset)
             extended_hex = ""
 
@@ -1752,10 +1762,15 @@
                 extended_hex += hex;
 
             })
+            console.log(extended_hex)
             const newURL = "https://lucas-sadoulet.github.io/GenEdCompass/page.html" + '?courses=' + encodeURIComponent(extended_hex);
 
+
             // Update the URL without reloading the page
-            history.pushState(null, '', newURL);
+            try {
+                history.pushState(null, '', newURL);
+            }
+            catch { }
             generate()
         }
 
