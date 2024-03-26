@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gen Ed Tool</title>
+    <title>Compass: GEN ED Tool</title>
+    <link rel="icon" type="image/x-icon" href="/icon.svg">
     <style>
         body {
             font-family: 'verdana';
@@ -128,12 +129,6 @@
             border: #b7b7b7 solid 2px
         }
 
-        .suggest_table {
-            width: 55%;
-            border-spacing: 0;
-            /* Add this line to ensure no spacing between cells */
-            margin-top: -1vw;
-        }
 
 
 
@@ -203,10 +198,15 @@
         }
 
         input {
-            padding: 8px;
+            padding: 10px;
             margin-bottom: -1px;
             width: calc(50%);
             display: inline-block;
+            background: #FFF;
+            color: black;
+            font-size: inherit;
+            border-radius: .3vw;
+
         }
 
 
@@ -215,8 +215,8 @@
             align-content: center;
             display: flex;
             margin: .2vw;
-            background-color: #c1b7f2;
-            color: #10226a;
+            background-color: #4734a6;
+            color: #fff;
             border: 0px;
             border-radius: 5px;
             width: 2vw;
@@ -227,15 +227,19 @@
             align-items: center;
             cursor: pointer;
             padding-bottom: 0.2vw;
-            border: #10226a 1px solid;
+            border: #10226a 0px solid;
 
         }
 
         .suggest_button {
-            padding-left: 2vw;
-            padding-right: 2vw;
+            padding-left: 1vw;
+            padding-right: 1vw;
             font-size: small;
-            width: 36%;
+            width: 12%;
+            position: absolute;
+            top: 0.2vw;
+            right: 0.2vw;
+
         }
 
         .course-item {
@@ -274,6 +278,16 @@
             margin-bottom: 1vw;
         }
 
+
+        .suggest_table {
+            width: 49%;
+            border-spacing: 0;
+            margin-top: 0vw;
+            display: inline-block;
+            align-content: center;
+            vertical-align: top;
+        }
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -290,7 +304,7 @@
             text-align: center;
             color: #212529;
             border: #8e8e8e 1px solid;
-            background-color: #f8f9fa;
+            background-color: #fff;
             cursor: pointer;
             transition: background-color 0.3s ease;
             width: 46px;
@@ -302,12 +316,12 @@
         }
 
         .grid-item.clicked {
-            color: #f8f9fa;
+            color: #fff;
             background-color: #696ec8
         }
 
         .domain_text {
-            width: 12%;
+            width: 24%;
             text-align: center;
         }
 
@@ -327,11 +341,13 @@
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
+            background-color: #ccdae6;
+            margin: 2% auto;
             padding: 20px;
-            border: 1px solid #888;
+            border: .2vw solid #102370;
             width: 80%;
+            border-radius: 2vw;
+            padding-top: .5vw;
         }
 
         .close {
@@ -378,6 +394,23 @@
             height: 2.5vw;
             translate: -.25vw .25vw
         }
+
+        #textTable {
+
+            border-collapse: separate;
+            /* Separate borders between cells */
+            border-spacing: 0 10px;
+            width: 100%;
+            border: 0;
+            margin-top: 0;
+        }
+
+        #textTable th,
+        #textTable td {
+            border: 1px solid black;
+            padding: 8px;
+            background: #e7ebee;
+        }
     </style>
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
@@ -387,12 +420,76 @@
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="hideInfo()">&times;</span>
-            <p>This web app was created to help Penn State student schedule their GEN ED course in a more efficent way.
-                This tools allows you to: <br /> - generate a suggested course set for minimize wasted credits<br /> -
-                see and sort all GEN ED course quickly<br /> - find course to fit your schedule and interests <br />
-                <br /> This tool is very early in development and will be updated, there will be bugs and
-                design-flaws, so if you have any feedback or comments, feel free to reach me at llsadoulet@gmail.com
-                <br />I hope this tool help! <br />-Lucas
+
+            <h2><strong>Getting Started</strong></h2>
+            <p>
+                Compass was created to help Penn State student schedule their GEN ED course most efficiently.
+                This tool allows you to find your most optimal course schedule; see and sort all GEN ED courses
+                quickly; and
+                find classes to fit your schedule and interests. <br />
+                Before getting started, I recommend reading this section to better understand how to use this tool
+                effectively.
+
+            <table id="textTable">
+                <tr>
+                    <th>Current Schedule</th>
+                    <td>Here you can see all of the domains required for your general education. As you add
+                        courses to
+                        your schedule, these sections will begin to fill until you have a complete
+                        schedule</td>
+                </tr>
+                <tr>
+                    <th>Suggested Schedule</th>
+                    <td>This tool shows you the most optimal course path for completing your remaining
+                        requirements in
+                        the fewest credits. It shows the domains and the credits for each of the suggestions, and by
+                        clicking the apply buttons (down arrows), the Course Finder will show you courses that fill
+                        that
+                        role.</td>
+                </tr>
+                <tr>
+                    <th>Course Finder</th>
+                    <td>Here you can search for courses based on the course code, name, credits, and domains.
+                        The search
+                        will show you all perfect matches in blue, and all close matches in grey. You can clear the
+                        filters with [delete key] or the clear button.</td>
+                </tr>
+                <tr>
+                    <th>Courses</th>
+                    <td>Courses can be added or removed from your schedule using the "+" or "-" buttons. For
+                        more
+                        information about a course, clicking the course code will open the official PSU page for
+                        that
+                        course.</td>
+                </tr>
+                <tr>
+                    <th>Saving</th>
+                    <td>Your schedule is saved by the URL of this page. By copying it, you can continue
+                        building your
+                        schedule at a later point.</td>
+                </tr>
+                <tr>
+                    <th>Quick Start</th>
+                    <td>To get started, find all of the classes you already took and add them to your schedule.
+                        Use the
+                        Suggested Schedule to filter and find classes to fill the remaining requirements. Add once
+                        you
+                        found a course you want and repeat until all credit domains are filled.</td>
+                </tr>
+                <tr>
+                    <th>Disclaimer</th>
+                    <td>This web tool is independently developed and maintained, with no association with Penn
+                        State
+                        University. It's recommended you consult with an academic advisor before changing your
+                        schedule.
+                    </td>
+                </tr>
+            </table>
+
+
+            This tool is very early in development and will be updated. There will be bugs and
+            design-flaws, so if you have any feedback or comments, feel free to reach me at llsadoulet@gmail.com
+            <br />I hope this tool helps! <br />- Lucas
             </p>
         </div>
     </div>
@@ -411,19 +508,22 @@
             </p>
         </div>
     </div>
-    <span class="info-icon" onclick="showInfo()">🛈</span>
+
     <div class="title-container">
-        <h1>PSU GenEd Compass</h1>
+        <h1 style="font-size: xx-large;"><strong>Compass PSU</strong></h1>
+        <button class="center_button suggest_button" onclick="showInfo()">Getting Started</button>
         <h5 style="justify-content: left;top: 1.8vw;position: relative;padding-right: .3vw;text-align: right;">version:
-            1.3<br>last update: 3/24/24</h5>
+            1.4<br>last update: 3/26/24</h5>
     </div>
 
 
 
     </div>
     <div class="slider-container">
-        <h2 class="domain_text">Domains</h2>
-        <h4 style=" left: 75%;
+        <h2 class="domain_text">Current Schedule</h2>
+
+        <div>
+            <h4 style=" left: 75%;
         position: relative;
         top: -3.2vw;
         justify-content: left;
@@ -432,7 +532,7 @@
         display: flex;
         width: 10vw;">total credits:</h4>
 
-        <h4 id='credit_counter' style=" left: 79%;
+            <h4 id='credit_counter' style=" left: 79%;
         position: relative;
         top: -5.7vw;
         justify-content: left;
@@ -441,7 +541,7 @@
         display: flex;
         width: 10vw;">0</h4>
 
-        <h4 style=" left: 75%;
+            <h4 style=" left: 75%;
         position: relative;
         top: -6.2vw;
         justify-content: left;
@@ -451,7 +551,7 @@
         width: 10vw;
         ">total courses:</h4>
 
-        <h4 id='course_counter' style=" left: 79%;
+            <h4 id='course_counter' style=" left: 79%;
         position: relative;
         margin-bottom: -8vw;
         top: -8.6vw;
@@ -460,7 +560,7 @@
         justify-content: right;
         display: flex;
         width: 10vw;">0</h4>
-
+        </div>
 
 
 
@@ -515,7 +615,7 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject3Value">5</span>
+            <span class='ratio-text' id="subject3Value"></span>
             <table class="course-list" id="addedCoursesTable_subject3">
                 <thead>
                     <tr>
@@ -655,7 +755,7 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject9Value">5</span>
+            <span class='ratio-text' id="subject9Value"></span>
             <table class="course-list" id="addedCoursesTable_subject9">
                 <thead>
                     <tr>
@@ -677,7 +777,7 @@
             <div class="slider-track">
                 <div class="position-indicator"></div>
             </div>
-            <span class='ratio-text' id="subject10Value">5</span>
+            <span class='ratio-text' id="subject10Value"></span>
             <table class="course-list" id="addedCoursesTable_subject10">
                 <thead>
                     <tr>
@@ -698,27 +798,37 @@
 
     <div class="class-lookup-container">
 
-        <h2>Generate Schedule</h2>
-        <button class="center_button suggest_button" onclick="generate('least')" style="
-        
 
-  ">Suggest Schedule</button>
-        <h5 id="generate_time" style="position: relative;
-        margin-top: -1vw;
-        left: 14vw;"></h5>
-        <table id="suggestTable" style="visibility:collapse" class="mainTable suggest_table">
-            <thead>
-                <tr>
-                    <th style="width: 65%">Domains</th>
-                    <th style="width: 20%">Credits</th>
-                    <th style="width: 15%"></th>
-                </tr>
-            </thead>
-            <tbody id="suggestTableBody">
-                <!-- Table content will be dynamically updated here -->
-            </tbody>
-        </table>
 
+        <h2>Suggested Schedule</h2>
+
+        <div class="table-container">
+            <table id="suggestTable" style="visibility:collapse" class="mainTable suggest_table">
+                <thead>
+                    <tr>
+                        <th style="width: 65%">Domains</th>
+                        <th style="width: 20%">Credits</th>
+                        <th style="width: 15%"></th>
+                    </tr>
+                </thead>
+                <tbody id="suggestTableBody">
+                    <!-- Table content will be dynamically updated here -->
+                </tbody>
+            </table>
+
+            <table id="suggestTableSecond" style="visibility:collapse" class="mainTable suggest_table">
+                <thead>
+                    <tr>
+                        <th style="width: 65%">Domains</th>
+                        <th style="width: 20%">Credits</th>
+                        <th style="width: 15%"></th>
+                    </tr>
+                </thead>
+                <tbody id="suggestTableBodySecond">
+                    <!-- Table content will be dynamically updated here -->
+                </tbody>
+            </table>
+        </div>
         <h2 style="translate: 0 .5vw;">Course Lookup</h2>
         <i class="fas fa-trash-alt"></i>
         <div class="container">
@@ -728,7 +838,7 @@
                 <input type="text" style="width:60%" id="courseNameInput" placeholder="Course Title"
                     oninput="updateTable()">
                 <button class="clear-button center_button" id="clearInput" onclick="clearInputs()">
-                    < </button>
+                    ⌫ </button>
 
             </div>
             <div class="grid-container">
@@ -837,164 +947,6 @@
             return binaryArray;
         }
 
-        function smallestArray(arrays) {
-            let smallest = null;
-            let smallestSize = Number.POSITIVE_INFINITY;
-
-            for (const array of arrays) {
-
-
-                if (array.length <= smallestSize) {
-                    smallest = array;
-                    smallestSize = array.length;
-                }
-            }
-
-            return smallest;
-        }
-
-        function matchValue(itemValues, remainingRequirements) {
-            return itemValues.reduce((sum, item, index) => sum + Math.min(item, remainingRequirements[index]), 0);
-        }
-
-        function extractConstant(arr) {
-            return math.max(constants)
-            const constants = arr.filter(element => element !== 0);
-
-            return constants[0];
-        }
-
-        function removeDuplicates(arr) {
-            // Create an empty object to store unique arrays
-            const uniqueArrays = {};
-
-            // Iterate through the array to filter out duplicates
-            arr.forEach(subArray => {
-                // Convert the subarray to a string to use as a key in the object
-                const key = JSON.stringify(subArray);
-                // If the key doesn't exist in the object, add it and keep the array
-                if (!uniqueArrays[key]) {
-                    //console.log(uniqueArrays)
-                    uniqueArrays[key] = [...subArray];
-                }
-            });
-
-            // Extract unique arrays from the object
-            const uniqueArray = Object.values(uniqueArrays);
-            return uniqueArray;
-        }
-
-        function capArray(maxArray, arr) {
-            // Check if the arrays have the same length
-
-            // Iterate through the 2D array
-            for (let i = 0; i < arr.length; i++) {
-                // Check if the subarray has the same length as the "max" array
-                if (arr[i][1].length !== maxArray.length) {
-                    console.log(arr[i], maxArray)
-                    throw new Error('Subarrays must have the same length as the max array');
-                }
-
-                // Iterate through the elements of the subarray
-                for (let j = 0; j < arr[i][1].length; j++) {
-                    // Replace the element if it exceeds the corresponding element in the "max" array
-                    if (arr[i][1][j] > maxArray[j]) {
-                        arr[i][1][j] = maxArray[j];
-                    }
-                }
-            }
-
-            return arr;
-        }
-
-        function selectItems(requirements, items, depth = 0) {
-            if (depth > 10) {
-                return []
-            }
-
-            const remainingRequirements = [...requirements];
-
-            var items_set = removeDuplicates(items)
-            var items_cleaned_capped = capArray(remainingRequirements, items_set)
-            var items_cleaned = removeDuplicates(items_cleaned_capped)
-
-            const sortedItems = items_cleaned.slice().sort((a, b) => matchValue(b, remainingRequirements) - matchValue(a, remainingRequirements));
-
-            const subSolvesSet = [];
-            width = [5, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3][depth]
-            //width = 3
-            for (let i = 0; i < Math.min(width, sortedItems.length); i++) {
-
-                const bestOption = sortedItems[i];
-
-                //console.log("best ", i, " ", bestOption)
-                const newRemainingRequirements = [...remainingRequirements.map((req, index) => Math.max(req - bestOption[1][index], 0))];
-                //console.log("req ", newRemainingRequirements)
-
-                //console.log(requirements, bestOption)
-
-                if (newRemainingRequirements.every(req => req === 0)) {
-                    return [bestOption];
-                }
-
-
-                const solve = selectItems(newRemainingRequirements, sortedItems.slice(i - 1), depth + 1);
-                //console.log("solve", solve)
-
-                const subSolution = solve.concat([solve]);
-                subSolvesSet.push(subSolution);
-            }
-
-            if (depth == 0) {
-                console.log(">>>", subSolvesSet)
-            }
-            return smallestArray(subSolvesSet);
-        }
-
-        function findN(array) {
-            return Math.max(...array);
-
-            let n = null;
-
-            for (const element of array) {
-                if (element !== 0) {
-                    n = element;
-                    break;
-                }
-            }
-
-            return n;
-        }
-
-        function findMinimumCredit(items, binaryArray) {
-            let minCredit = Infinity;
-
-            for (const item of items) {
-                binaryList = binaryify(item)
-                credit = findN(item)
-                let match = true;
-
-                // Check if the binary list of the object matches the given binary array
-                for (let i = 0; i < binaryList.length; i++) {
-                    // If the binary digit is 1 in binaryArray but not in binaryList, it's not a match
-                    if (binaryArray[i] === 1 && binaryList[i] !== 1) {
-                        match = false;
-                        break;
-                    }
-                }
-
-                // If there is a match, update the minimum credit
-                if (match && credit < minCredit) {
-                    minCredit = credit;
-                }
-            }
-
-            // If no match is found, return null
-            return minCredit === Infinity ? null : minCredit;
-        }
-
-
-
         function reduceQuals(remainingCredits, courses) {
             var reduced_array = []
             courses.forEach(course => {
@@ -1017,7 +969,7 @@
 
             const courseName = document.getElementById("courseNameInput");
             courseName.value = "";
-
+            updateTable()
         }
 
         function getCourseScore(course_credits, remaining) {
@@ -1095,7 +1047,7 @@
 
             console.log(">>", sorted_courses)
 
-
+            if (sorted_courses.length == 0) return []
 
             var best = [sorted_courses[0][0], sorted_courses[0][1].slice()]
 
@@ -1175,10 +1127,9 @@
 
             const requirements = [];
             const tableBody = document.getElementById('suggestTableBody');
+            const tableBodySecond = document.getElementById('suggestTableBodySecond');
             const table = document.getElementById('suggestTable');
-            table.style.visibility = 'visible';
-            tableBody.innerHTML = ''; // Clear table body
-
+            const tableSecond = document.getElementById('suggestTableSecond');
             // Calculate requirements and retrieve filled values
             for (let i = 1; i <= 10; i++) {
                 const filled = parseFloat(document.getElementById(`subject${i}Value`).innerText.split(" of ")[0]);
@@ -1211,8 +1162,25 @@
             console.log("Done Generation")
 
             // Generate table rows
+
+            tableSecond.style.visibility = 'hidden';
+            table.style.visibility = 'hidden';
+            tableBody.innerHTML = '';
+            tableBodySecond.innerHTML = "";
+            if (suggestedPlan.length > 0) {
+                table.style.visibility = 'visible';
+
+            }
+            if (suggestedPlan.length > 5) {
+                tableSecond.style.visibility = 'visible';
+
+            }
+
+            count = 0
             suggestedPlan.forEach(entry => {
+
                 console.log(entry)
+                count += 1
                 const credits = entry[0];
 
                 console.log(entry)
@@ -1246,13 +1214,19 @@
                 row.appendChild(qualificationsCell);
                 row.appendChild(courseCreditCell);
                 row.appendChild(actionsCell);
-                tableBody.appendChild(row);
+                if (count > 5) {
+                    tableBodySecond.appendChild(row);
+                }
+                else {
+                    tableBody.appendChild(row);
+                }
+
             });
-            const time = document.getElementById('generate_time');
+            //const time = document.getElementById('generate_time');
 
             const endTime = performance.now();
 
-            time.innerHTML = endTime - startTime + " ms";
+            //time.innerHTML = endTime - startTime + " ms";
 
         }
 
@@ -1317,9 +1291,6 @@
 
             const currentURL = window.location.href;
 
-            updateQualificationTables()
-            updateTable()
-
             const clearInput = document.getElementById("clearInput");
             const codeInput = document.getElementById("courseCodeInput");
 
@@ -1335,6 +1306,7 @@
                     clearInputs()
                 }
             });
+
 
             let numberInput = document.getElementById('creditsInput');
 
@@ -1360,8 +1332,10 @@
 
             }
 
-            updateQualificationTables()
             updateTable()
+
+            updateQualificationTables()
+            generate("")
 
         }
 
@@ -1418,6 +1392,7 @@
         function link_move_3() {
 
         }
+
         function createRow(tableBody, entry, perfect) {
             const row = document.createElement('tr');
             const courseCodeCell = document.createElement('td');
@@ -1445,7 +1420,7 @@
             // Map qualification numbers to titles for display
             const qualificationTitles = entry.qualifications.map(getQualificationTitle);
 
-            qualificationsCell.textContent = qualificationTitles.join(' ');
+            qualificationsCell.innerHTML = qualificationTitles.join(' ');
 
             // Add "Add" and "Remove" buttons
             const addButton = document.createElement('button');
@@ -1541,10 +1516,18 @@
             const tableBody = document.getElementById('tableBody');
             tableBody.innerHTML = '';
 
+            var row_count = 0;
             filteredDataStart.forEach(entry => {
+                row_count += 1
+
                 createRow(tableBody, entry, true)
             });
             filteredDataContain.forEach(entry => {
+
+                row_count += 1
+                if (row_count > 100) {
+                    return
+                }
                 createRow(tableBody, entry, false)
             });
 
@@ -1554,6 +1537,8 @@
         function getQualificationTitle(qualificationNumber) {
 
             //console.log(qualificationNumber, qualificationMapAbbr[qualificationNumber - 1])
+            if (selected_filter[qualificationNumber - 1])
+                return "<strong>" + qualificationMapAbbr[qualificationNumber - 1] + "</strong>" || ''//'Unknown Qualification';
 
             return qualificationMapAbbr[qualificationNumber - 1] || ''//'Unknown Qualification';
 
@@ -1702,8 +1687,8 @@
             }
         }
 
-
         function removeFromQualification(course) {
+
 
             course_count -= 1;
             const course_counter = document.getElementById('course_counter');
@@ -1744,7 +1729,10 @@
             // Update the URL without reloading the page
             history.pushState(null, '', newURL);
 
+            generate("")
+
         }
+
         function addToQualification(course, row) {
 
 
@@ -1789,8 +1777,9 @@
 
             // Update the URL without reloading the page
             history.pushState(null, '', newURL);
-
+            generate()
         }
+
         function updateAddedCoursesTable(sliderId) {
             // Update the table for the added courses based on the sliderId
             console.log(sliderId)
