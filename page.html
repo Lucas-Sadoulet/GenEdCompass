@@ -1429,7 +1429,6 @@
                 hex = metadata.substring(0, 3)
                 metadata = metadata.substring(3)
 
-                console.log("meta_data_sub", metadata)
 
                 dec = parseInt(hex, 16);
                 addToQualification(complete_dataset[dec])
@@ -1615,15 +1614,12 @@
             }
             var filteredDataClean = unadded_dataset.filter(entry => true)
 
-            console.log(selected_filter, filteredDataClean.length)
             if (selected_filter[2] == -1) {
-                console.log("checking")
 
                 filteredDataClean = unadded_dataset.filter(entry =>
                     !entry.qualifications.includes(3)
                 );
             }
-            console.log(filteredDataClean.length, filteredDataClean)
 
             unadded_dataset.sort((a, b) => {
                 var a_count = sum_filter(a)
@@ -1823,7 +1819,7 @@
 
                 if (non_inter_element) {
                     if (non_inter[i - 4] > 0) {
-                        non_inter_element.innerHTML = (3 - non_inter[i - 4]) + " of 3 credits of Non-Interdomain Required"
+                        non_inter_element.innerHTML = (3 - non_inter[i - 4]) + " of 3 credits of Non-Interdomain"
                     }
                     else {
                         non_inter_element.innerHTML = ""
@@ -1955,7 +1951,6 @@
                     }
                 }
             }
-            console.log(non_inter)
             if (row)
                 row.remove()
 
