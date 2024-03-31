@@ -2,16 +2,16 @@
 <html lang="en">
 
 <head>
-    
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K5E3Z11QSB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-K5E3Z11QSB');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K5E3Z11QSB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-K5E3Z11QSB');
+    </script>
 
 
     <meta charset="UTF-8">
@@ -54,6 +54,22 @@
             margin-left: .2vw;
         }
 
+        .collection-container {
+            margin-bottom: .4vw;
+            width: 65%;
+            /* Adjusted for proportional width */
+            border: #8e8e8e 0.1vw solid;
+
+
+            background: #f8f9fa;
+            width: calc(100% - 1.3vw);
+            /* Adjusted for proportional width in a 2 by 4 grid */
+            display: inline-block;
+            margin-left: .2vw;
+            margin-top: 1vw;
+            padding-bottom: .5vw;
+        }
+
         /* Styling for sliders */
         input[type="range"] {
             -webkit-appearance: none;
@@ -92,7 +108,7 @@
             font-size: inherit;
 
             position: relative;
-            left: 39%;
+            left: 34%;
             text-decoration-line: underline;
             cursor: pointer;
         }
@@ -162,6 +178,7 @@
         td {
             border-bottom: 0.1vw solid #a1a2ca;
             padding: 0.1vw;
+            font-size: .9vw;
 
         }
 
@@ -316,6 +333,11 @@
             background-color: #696ec8
         }
 
+        .grid-item.double-clicked {
+            color: #ffffff;
+            background-color: #e86969;
+        }
+
         .domain_text {
             width: 35%;
             text-align: center;
@@ -338,13 +360,13 @@
 
         .modal-content {
             background-color: #ccdae6;
-  margin: 2% auto;
-  padding: 1vw;
-    padding-top: 1vw;
-  border: .2vw solid #102370;
-  width: 78%;
-  border-radius: 2vw;
-  padding-top: .5vw;
+            margin: 2% auto;
+            padding: 1vw;
+            padding-top: 1vw;
+            border: .2vw solid #102370;
+            width: 78%;
+            border-radius: 2vw;
+            padding-top: .5vw;
         }
 
         .close {
@@ -410,10 +432,20 @@
             padding: .5vw;
             background: #e7ebee;
         }
+
+        .course-list {
+            margin-top: .5vw;
+        }
+
+        .non-inter-text {
+            position: relative;
+            left: 1vw;
+            display: inline-block;
+        }
     </style>
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
-    
+
 
 
 </head>
@@ -476,8 +508,11 @@
                 </tr>
                 <tr>
                     <th>Quick Start</th>
-                    <td>To get started, find all of the classes you have already taken and add them to your schedule. Then use the
-                        Suggested Schedule to filter for classes that meet the remaining requirements. Search for courses that meet each suggested requirement and repeat until all credit domains are filled.</td>
+                    <td>To get started, find all of the classes you have already taken and add them to your schedule.
+                        Then use the
+                        Suggested Schedule to filter for classes that meet the remaining requirements. Search for
+                        courses that meet each suggested requirement and repeat until all credit domains are filled.
+                    </td>
                 </tr>
                 <tr>
                     <th>Disclaimer</th>
@@ -492,11 +527,11 @@
             <p style="border: 0.1vw solid black;
   padding: .5vw;
   background: #e7ebee;">
-            This tool is early in development and will be updated, there will be design flaws. If you have any
-            feedback, feel free to use the web tool's forum: 
-<a href="https://github.com/Lucas-Sadoulet/NittanyCompass/discussions/1">Nittany Compass Forum</a>
+                This tool is early in development and will be updated, there will be design flaws. If you have any
+                feedback, feel free to use the web tool's forum:
+                <a href="https://github.com/Lucas-Sadoulet/NittanyCompass/discussions/1">Nittany Compass Forum</a>
 
-            <br />I hope this tool helps! <br /> - Lucas
+                <br />I hope this tool helps! <br /> - Lucas
             </p>
         </div>
     </div>
@@ -521,7 +556,7 @@
         color: #00005b;"><strong>Nittany Compass</strong></h1>
         <button class="center_button suggest_button" onclick="showInfo()">Getting Started</button>
         <h5 style="justify-content: left;top: 1.8vw;position: relative;padding-right: .3vw;text-align: right;">version:
-            1.6<br>last update: 3/30/24</h5>
+            1.7<br>last update: 3/30/24</h5>
     </div>
 
 
@@ -599,6 +634,16 @@
             </table>
         </div>
 
+        <!-- Knowledge -->
+        <div class="collection-container">
+            <label class='title-text' for="subject2">Knowledge Domains</label>
+            <div class="slider-track" id="knowledge_slider">
+                <div class="position-indicator"></div>
+            </div>
+            <span class='ratio-text' id="subject2Value"></span>
+
+        </div>
+
         <!-- Inter-Domain (ID) -->
         <div class="subject-container">
             <label class='title-text' for="subject3">Inter-Domain [ID]</label>
@@ -629,6 +674,8 @@
             </div>
             <span class='ratio-text' id="subject4Value"></span>
             <span class='move-3-text' id="subject4Move" onclick="showInfoMove()"></span>
+            <span class='non-inter-text' id="subject4Non"></span>
+
             <table class="course-list" id="addedCoursesTable_subject4">
                 <thead>
                     <tr>
@@ -652,6 +699,8 @@
             </div>
             <span class='ratio-text' id="subject5Value"></span>
             <span class='move-3-text' id="subject5Move"></span>
+            <span class='non-inter-text' id="subject5Non">Testing</span>
+
             <table class="course-list" id="addedCoursesTable_subject5">
                 <thead>
                     <tr>
@@ -675,6 +724,7 @@
             </div>
             <span class='ratio-text' id="subject6Value"></span>
             <span class='move-3-text' id="subject6Move" onclick="showInfoMove()"></span>
+            <span class='non-inter-text' id="subject6Non">TestingTestingTesting</span>
 
             <table class="course-list" id="addedCoursesTable_subject6">
                 <thead>
@@ -699,6 +749,7 @@
             </div>
             <span class='ratio-text' id="subject7Value"></span>
             <span class='move-3-text' id="subject7Move" onclick="showInfoMove()"></span>
+            <span class='non-inter-text' id="subject7Non"></span>
 
             <table class="course-list" id="addedCoursesTable_subject7">
 
@@ -724,6 +775,8 @@
             </div>
             <span class='ratio-text' id="subject8Value"></span>
             <span class='move-3-text' id="subject8Move" onclick="showInfoMove()"></span>
+            <span class='non-inter-text' id="subject8Non"></span>
+
             <table class="course-list" id="addedCoursesTable_subject8">
                 <thead>
                     <tr>
@@ -740,7 +793,7 @@
         </div>
 
         <!-- International Cultures (IL) -->
-        <div class="subject-container">
+        <div class="subject-container" style="margin-top: 1vw;">
             <label class='title-text' for="subject9">International Cultures [IL]</label>
             <div class="slider-track">
                 <div class="position-indicator"></div>
@@ -909,7 +962,9 @@
 
         var credit_count = 0;
         var course_count = 0;
+        var knowledge_count = 0;
 
+        var non_inter = [3, 3, 3, 3, 3];
 
         const qualificationSize = {
             1: 6,
@@ -966,29 +1021,36 @@
             for (var i = 0; i < selected_filter.length; i++) {
 
                 gridItems[i].classList.remove('clicked');
+                gridItems[i].classList.remove('double-clicked');
 
             }
             updateTable()
         }
 
-        function getCourseScore(course_credits, remaining) {
+        function getCourseScore(course_credits, remaining, remainingNonInter) {
 
             maximum = Math.max(remaining)
             var score = 0;
-            var extra = 0
-            for (var i = 0; i < remaining.length; i++) {
+            var extra = 0;
 
+            for (var i = 0; i < remaining.length; i++) {
                 if (course_credits[1][i]) {
 
                     if (i == 6) {
-                        extra = .1
+                        extra += .1
+                    }
+                    if (course_credits == 3) {
+                        extra += 0
+                    }
+                    if (i > 2 && i < 8 && remainingNonInter[i - 3] > 0 && course_credits[1][i] == 1 && course_credits[2] == 1) {
+                        extra += 100
+
                     }
                     score += course_credits[0] + Math.min(remaining[i] - course_credits[0], 0)
                 }
-
             }
-            var new_score = (score + extra) / course_credits[0]
 
+            var new_score = (score) / course_credits[0] + extra
 
             return new_score
         }
@@ -1000,7 +1062,7 @@
             // Filter the array to keep only unique objects
             let uniqueArray = array.filter(obj => {
                 // Generate a unique key based on object parameters
-                let key = obj[0] + " " + obj[1];
+                let key = obj[0] + " " + obj[1] + " " + obj[2];
 
                 // If the key does not exist in the uniqueObjects map, add the object
                 if (!uniqueObjects[key]) {
@@ -1015,7 +1077,7 @@
             return uniqueArray;
         }
 
-        function optimalCourses(remainingCredits, courses, depth = 0) {
+        function optimalCourses(remainingCredits, remainingNonInter, courses, depth = 0) {
 
 
 
@@ -1034,7 +1096,7 @@
 
 
 
-            var sorted_courses = filtered_courses.sort((a, b) => getCourseScore(b, remainingCredits) > getCourseScore(a, remainingCredits));
+            var sorted_courses = filtered_courses.sort((a, b) => getCourseScore(b, remainingCredits, remainingNonInter) > getCourseScore(a, remainingCredits, remainingNonInter));
 
             //var sorted_courses = filtered_courses.sort((a, b) => {
             //    return getCourseScore(b, remainingCredits) - getCourseScore(a, remainingCredits) || matchValue(b, remainingCredits) - matchValue(a, remainingCredits);
@@ -1044,19 +1106,24 @@
 
             if (sorted_courses.length == 0) return []
 
-            var best = [sorted_courses[0][0], sorted_courses[0][1].slice()]
+            var best = [sorted_courses[0][0], sorted_courses[0][1].slice(), sorted_courses[0][2]]
 
 
             for (var i = 0; i < remainingCredits.length; i++) {
                 remainingCredits[i] = Math.max(remainingCredits[i] - best[0] * best[1][i], 0)
             }
 
+            if (best[2] == 1) {
+                for (var i = 0; i < remainingNonInter.length; i++) {
+                    remainingNonInter[i] = Math.max(remainingNonInter[i] - best[0] * best[1][i + 3], 0)
+                }
+            }
 
-            if (remainingCredits.every(element => element === 0)) {
+            if (remainingCredits.every(element => element === 0) && remainingNonInter.every(element => element === 0)) {
                 return [best]
             }
 
-            solve = optimalCourses(remainingCredits, sorted_courses, depth + 1)
+            solve = optimalCourses(remainingCredits, remainingNonInter, sorted_courses, depth + 1)
 
             return solve.concat([best.slice()])
 
@@ -1065,7 +1132,7 @@
 
         }
 
-        function setSort(qualifications, credit) {
+        function setSort(qualifications, credit, alone = 0) {
 
             clearInputs()
             const inputElement = document.getElementById("creditsInput");
@@ -1081,10 +1148,15 @@
 
                 }
                 else {
-                    console.log(qualifications[i])
                     gridItems[i].classList.remove('clicked');
                     selected_filter[i] = 0
                 }
+            }
+            if (alone) {
+                gridItems[2].classList.add('double-clicked');
+                gridItems[2].classList.remove('clicked');
+                selected_filter[2] = -1
+
             }
 
             updateTable()
@@ -1132,14 +1204,23 @@
                     domainSet[domains] = 1;
                 }
 
-                binarySet.push([parseFloat(course.credit), toBinaryArray(course.qualifications, 1)]);
+                bin_array = toBinaryArray(course.qualifications, 1)
+                alone = 0
+                if (bin_array[2] != 1) {
+                    alone = 1
+                }
+
+                binarySet.push([parseFloat(course.credit), bin_array, alone]);
             }
 
             completeBinarySet = [...binarySet]
             // Perform item selection based on requirements
 
+            remainingNonInter = [...non_inter]
             //const suggestedPlan = selectItems(requirements, binarySet).reverse();
-            const suggestedPlan = optimalCourses(requirements, binarySet).reverse();
+
+
+            const suggestedPlan = optimalCourses(requirements, remainingNonInter, binarySet).reverse();
 
             // Generate table rows
 
@@ -1151,18 +1232,22 @@
                 table.style.visibility = 'visible';
 
             }
-            if (suggestedPlan.length > 5) {
+            if (suggestedPlan.length > 1) {
                 tableSecond.style.visibility = 'visible';
 
             }
 
             count = 0
+            console.log(suggestedPlan)
             suggestedPlan.forEach(entry => {
 
                 count += 1
                 const credits = entry[0];
 
                 const reducedEntry = entry[1];
+
+                const alone = entry[2];
+
 
                 const row = document.createElement('tr');
                 const qualificationsCell = document.createElement('td');
@@ -1177,7 +1262,16 @@
                     return acc;
                 }, []);
 
-                qualificationsCell.textContent = qualificationSet.join(', ');
+
+                var text = ""
+                if (alone) {
+                    text += '<s>[ID]</s>, '
+
+                }
+                text += qualificationSet.join(', ');
+                qualificationsCell.innerHTML = text;
+
+
                 courseCreditCell.textContent = credits;
                 courseCreditCell.style.textAlign = "center";
 
@@ -1185,14 +1279,15 @@
                 const sortButton = document.createElement('button');
                 sortButton.textContent = '⇓';
                 sortButton.classList.add("center_button");
-                sortButton.addEventListener('click', () => setSort(reducedEntry, credits));
+                sortButton.addEventListener('click', () => setSort(reducedEntry, credits, alone));
                 actionsCell.appendChild(sortButton);
 
                 // Append cells to row and row to table body
                 row.appendChild(qualificationsCell);
                 row.appendChild(courseCreditCell);
                 row.appendChild(actionsCell);
-                if (count > 5) {
+
+                if (count > (suggestedPlan.length + 1) / 2) {
                     tableBodySecond.appendChild(row);
                 }
                 else {
@@ -1253,9 +1348,34 @@
                     }
                 });
 
-                unadded_dataset = filteredData;
+                let cleanData = [];
+                filteredData.forEach(obj => {
 
-                complete_dataset = filteredData;
+                    if (obj.qualifications.includes(9) && obj.qualifications.includes(10)) {
+
+
+                        quals = [...obj.qualifications]
+                        quals_10 = quals.filter(num => num !== 9);
+                        quals_9 = quals.filter(num => num !== 10);
+
+                        let deepCopy = JSON.parse(JSON.stringify(obj));
+                        deepCopy.qualifications = quals_10
+                        obj.qualifications = quals_9
+                        cleanData.push(deepCopy);
+                        cleanData.push(obj);
+
+                    } else {
+
+                        cleanData.push(obj);
+
+                    }
+                });
+
+                console.log(filteredData)
+
+                unadded_dataset = cleanData;
+
+                complete_dataset = cleanData;
 
                 // Now you can use itemList as your list of items
 
@@ -1303,13 +1423,20 @@
             addToQualification(complete_dataset[0])
             removeFromQualification(complete_dataset[0])
 
+            console.log("meta_data", metadata)
             while (metadata.length > 0) {
+
                 hex = metadata.substring(0, 3)
+                metadata = metadata.substring(3)
+
+                console.log("meta_data_sub", metadata)
+
                 dec = parseInt(hex, 16);
                 addToQualification(complete_dataset[dec])
 
 
-                metadata = metadata.substring(3) | ""
+
+                console.log("meta_data_sub", metadata)
 
 
             }
@@ -1317,7 +1444,7 @@
             function myFunction() {
                 updateTable()
                 updateQualificationTables()
-                generate("")
+                //generate("")
 
             }
 
@@ -1364,8 +1491,26 @@
 
         function toggleColor(element, number) {
 
-            selected_filter[number] = [1, 0][selected_filter[number]]
-            element.classList.toggle('clicked');
+            if (number == 2) {
+                selected_filter[number] = [0, 1, -1][selected_filter[number] + 1]
+
+                if (selected_filter[number] == -1) {
+                    element.classList.remove('clicked');
+                    element.classList.add('double-clicked');
+                }
+                else if (selected_filter[number] == 0) {
+                    element.classList.remove('double-clicked');
+                }
+                else {
+                    element.classList.add('clicked');
+                }
+
+            }
+            else {
+                selected_filter[number] = [1, 0][selected_filter[number]]
+                element.classList.toggle('clicked');
+
+            }
             updateTable()
         }
 
@@ -1461,13 +1606,25 @@
 
             selected_filter_count = 0
             selected_filter.forEach(num => {
-                selected_filter_count += num;
+                selected_filter_count += Math.max(num, 0);
             })
 
             perfect_rows = true
             if (courseCodeInput == "" && courseNumberInput == "" && courseNameInput == "" && creditInput <= 0 && selected_filter_count == 0) {
                 perfect_rows = false
             }
+            var filteredDataClean = unadded_dataset.filter(entry => true)
+
+            console.log(selected_filter, filteredDataClean.length)
+            if (selected_filter[2] == -1) {
+                console.log("checking")
+
+                filteredDataClean = unadded_dataset.filter(entry =>
+                    !entry.qualifications.includes(3)
+                );
+            }
+            console.log(filteredDataClean.length, filteredDataClean)
+
             unadded_dataset.sort((a, b) => {
                 var a_count = sum_filter(a)
                 var b_count = sum_filter(b)
@@ -1481,7 +1638,7 @@
                 }
                 return a.courseNumber.localeCompare(b.courseNumber);
             });
-            const filteredDataStart = unadded_dataset.filter(entry =>
+            const filteredDataStart = filteredDataClean.filter(entry =>
                 entry.courseCode.toLowerCase().startsWith(courseCodeInput) &&
                 entry.courseNumber.toLowerCase().startsWith(courseNumberInput) && (sum_filter(entry) >= selected_filter_count || selected_filter_count == 0) && (entry.credit == creditInput || creditInput <= 0) && (entry.courseName.toLowerCase().indexOf(courseNameInput) >= 0) && perfect_rows
             );
@@ -1502,13 +1659,16 @@
             var row_count = 0;
             filteredDataStart.forEach(entry => {
                 row_count += 1
-
+                if (row_count > 150) {
+                    return
+                }
                 createRow(tableBody, entry, true)
+
             });
             filteredDataContain.forEach(entry => {
 
                 row_count += 1
-                if (row_count > 100) {
+                if (row_count > 150) {
                     return
                 }
                 createRow(tableBody, entry, false)
@@ -1519,7 +1679,7 @@
 
         function getQualificationTitle(qualificationNumber) {
 
-            if (selected_filter[qualificationNumber - 1])
+            if (selected_filter[qualificationNumber - 1] == 1)
                 return "<strong>" + qualificationMapAbbr[qualificationNumber - 1] + "</strong>" || ''//'Unknown Qualification';
 
             return qualificationMapAbbr[qualificationNumber - 1] || ''//'Unknown Qualification';
@@ -1539,15 +1699,7 @@
             positionIndicator.style.left = `${newValue}%`;
         }
 
-        function initializeAddedCoursesTables() {
-            Object.keys(addedCourses).forEach(sliderId => {
-                updateAddedCoursesTable(sliderId);
-            });
-        }
 
-        // Initial table update
-        // Initialize added courses tables
-        // initializeAddedCoursesTables();
 
         function updateQualificationTables() {
             for (var i = 1; i <= 10; i++) {
@@ -1578,8 +1730,15 @@
                         // Opens the link in a new tab
                         courseCodeCell.classList.add("link-button")
                         courseCodeCell.textContent = course.courseCode + " " + course.courseNumber;
-                        courseCodeCell.href = "https://bulletins.psu.edu/search/?P=" + course.courseCode + "%20" + course.courseNumber;
-                        courseCodeCell.target = '_blank';
+
+                        courseCodeCell.addEventListener('click', function () {
+
+                            //window.open("http://127.0.0.1:5500/PennStateGenEd.html");
+                            //getCourseDescription(entry.courseCode + " " + entry.courseNumber)
+                            window.open("https://bulletins.psu.edu/search/?P=" + course.courseCode + "%20" + course.courseNumber, '_blank', 'noopener,noreferrer');
+
+                        });
+
 
                         courseNameCell.textContent = course.courseName;
                         courseCreditCell.textContent = course.credit;
@@ -1618,6 +1777,32 @@
                     }
                 });
             });
+
+            var subjectTable = document.getElementById(`knowledge_slider`);
+            var ratio = subjectTable.parentElement.querySelector('.ratio-text');
+            ratio.innerHTML = knowledge_count + " of 30 credits"
+            filled = Math.min(knowledge_count, 30)
+            var sliderIndicator = subjectTable.parentElement.querySelector('.position-indicator');
+            sliderIndicator.style.width = (filled / 30) * 100 + "%"
+
+            var sliderTrack = subjectTable.parentElement.querySelector('.slider-track');
+            sliderTrack.style.width = 9.5 * fill_width + "%"
+
+
+            if (filled >= 30) {
+                sliderIndicator.style.backgroundColor = "#069128";
+                sliderIndicator.classList.add("gradient-green")
+            }
+            else {
+                sliderIndicator.style.backgroundColor = "#7b80d9";
+                try {
+                    sliderIndicator.classList.remove("gradient-green")
+                }
+                catch {
+
+                }
+            }
+
             for (var i = 1; i <= 10; i++) {
                 var filled = parseFloat(document.getElementById(`subject${i}Value`).innerHTML);
                 var subjectTable = document.getElementById(`addedCoursesTable_subject${i}`);
@@ -1633,6 +1818,18 @@
                         move_3_element.innerHTML = ""
                     }
                 }
+
+                const non_inter_element = subjectTable.parentElement.querySelector('.non-inter-text');
+
+                if (non_inter_element) {
+                    if (non_inter[i - 4] > 0) {
+                        non_inter_element.innerHTML = (3 - non_inter[i - 4]) + " of 3 credits of Non-Interdomain Required"
+                    }
+                    else {
+                        non_inter_element.innerHTML = ""
+                    }
+                }
+
                 ratio.innerHTML = filled + " of " + qualificationSize[i] + " credits"
 
 
@@ -1679,7 +1876,17 @@
             credit_counter.innerHTML = credit_count
 
 
+            if (hasNumberInRange(course.qualifications)) {
+                knowledge_count -= parseFloat(course.credit);
+            }
 
+            if (!course.qualifications.includes(3)) {
+                for (var i = 4; i <= 8; i++) {
+                    if (course.qualifications.includes(i)) {
+                        non_inter[i - 4] = parseInt(non_inter[i - 4]) + parseInt(course.credit)
+                    }
+                }
+            }
 
             //added_dataset.pop(course)
             added_dataset = added_dataset.filter(item => item !== course);
@@ -1721,6 +1928,11 @@
                 history.pushState(null, '', newURL);
             }
         }
+        function hasNumberInRange(array) {
+            console.log("array")
+            return array.some(num => num > 3 && num < 9);
+        }
+
         function addToQualification(course, row) {
 
 
@@ -1732,6 +1944,18 @@
             const credit_counter = document.getElementById('credit_counter');
             credit_counter.innerHTML = credit_count
 
+            if (hasNumberInRange(course.qualifications)) {
+                knowledge_count += parseFloat(course.credit);
+            }
+
+            if (!course.qualifications.includes(3)) {
+                for (var i = 4; i <= 8; i++) {
+                    if (course.qualifications.includes(i)) {
+                        non_inter[i - 4] = non_inter[i - 4] - parseInt(course.credit)
+                    }
+                }
+            }
+            console.log(non_inter)
             if (row)
                 row.remove()
 
@@ -1761,6 +1985,7 @@
                 const courseNameCell = document.createElement('td');
 
                 courseCodeCell.textContent = course.courseCode;
+
                 classNumberCell.textContent = course.courseNumber;
                 courseNameCell.textContent = course.courseName;
 
